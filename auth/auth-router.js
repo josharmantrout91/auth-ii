@@ -18,7 +18,7 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  let { username, password, department } = req.body;
+  let { username, password } = req.body;
 
   Users.findBy({ username })
     .first()
@@ -26,9 +26,8 @@ router.post("/login", (req, res) => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         res.status(200).json({
-          message: `Welcome to the Big Show, ${
-            user.username
-          }! Here is a token just for you`,
+          message: `Welcome to the Big Show, 
+          ${user.username} ! Here is a token just for you`,
           token
         });
       } else {
