@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = require("express").Router();
 const Users = require("../users/users-model");
+const secrets = require("../secret/secrets");
 
 router.post("/register", (req, res) => {
   let user = req.body;
@@ -23,11 +24,14 @@ router.post("/login", (req, res) => {
   Users.findBy({ username })
     .first()
     .then(user => {
+      console.log("user", user);
+      console.log("req body", req.body);
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         res.status(200).json({
-          message: `Welcome to the Big Show, 
-          ${user.username} ! Here is a token just for you`,
+          message: `Welcome to the Big Show, ${
+            user.username
+          }! Here is a token just for you`,
           token
         });
       } else {
